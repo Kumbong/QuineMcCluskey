@@ -14,8 +14,12 @@ class QuineMcCluskey:
         else:
             self.dont_cares = []
         self.prime_implicants = []
+
         self.combined = []
+
         self.essential_prime_implicants = []
+
+        self.coverage_table = {}
 
     def to_binary(self,minterms=[]):
         """
@@ -159,9 +163,8 @@ class QuineMcCluskey:
                 grps.append(grp)
 
         return grps
-            
 
-    def primes(self):
+    def pis(self):
 
         mts = self.minterms + self.dont_cares
         gen = self.group_minterms(mts)
@@ -176,21 +179,63 @@ class QuineMcCluskey:
 
             n = self.combine_generation(new_gen)
             new_gen = n
-        
-            
-        
-        
 
         self.prime_implicants = [pi for pi in self.prime_implicants if pi not in self.combined]
         
 
         return self.prime_implicants
+        
+            
+    def can_cover(self,pi,minterm):
+        """
+        Generates all possible permutations of the prime implicant
+
+        Args:
+            pi: A string representing the prime implicant
+
+        Returns:
+            A list containing all possible permutations of the prime implicant
+        Raises:
+        """
+        #extract the minterm to also contain dashes where pi contains them 
+
+        pos = [i for i in range(len(pi)) if pi[i]=='_']
+
+        for i in range(len(pi)):
+            if i not in pos and pi[i]!=minterm[i]:
+                return False
+
+        return True
+
+
+
+
+    def epis(self):
+        
+        #for each minterm determine all the prime implicants that 
+        #can cover it 
+        for minterm in self.minterms:
+            self.coverage_table[minterm] = []
+            for pi in self.prime_implicants:
+                #print(minterm,'   ',pi)
+                if self.can_cover(pi,minterm):
+                    self.coverage_table[minterm].append(pi)
+
+        #find the prime implicants that are the only one covering any minterm
+
+        for minterm in self.minterms:
+            if len(self.coverage_table[minterm]) == 1:
+                self.essential_prime_implicants.append(self.coverage_table[minterm][0])
+
+        #filter out any prime implicants that appear twice
+        self.essential_prime_implicants = list(set(self.essential_prime_implicants))
+
+        return self.essential_prime_implicants
 
 if __name__ == '__main__':
-    terms = [5,7,9,11,13,15]
+    terms = [0, 2, 5, 6, 7, 8, 10, 12, 13, 14, 15]
 
     c = QuineMcCluskey(terms)
+    print(c.pis())
+    print(c.epis())
 
-    print(c.primes())
-
-   
