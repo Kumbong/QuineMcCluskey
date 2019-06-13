@@ -5,7 +5,7 @@
 import sys
 
 
-class QuineMcCluskey:
+class QM:
     def __init__(self,minterms,dont_cares=[]):
         self.minterms =  self.to_binary(minterms)
 
@@ -225,17 +225,18 @@ class QuineMcCluskey:
 
         for minterm in self.minterms:
             if len(self.coverage_table[minterm]) == 1:
-                self.essential_prime_implicants.append(self.coverage_table[minterm][0])
+                self.essential_prime_implicants.append(self.coverage_table.pop(minterm)[0])
+
+                #remove the minterms that are covered from the coverage table            
 
         #filter out any prime implicants that appear twice
         self.essential_prime_implicants = list(set(self.essential_prime_implicants))
 
         return self.essential_prime_implicants
 
-if __name__ == '__main__':
-    terms = [0, 2, 5, 6, 7, 8, 10, 12, 13, 14, 15]
+    def other_pis(self):
+        #returns the other non essential prime implicants necessary to  complete the coverage table
+        #uses petricks method for computation
+        pass
 
-    c = QuineMcCluskey(terms)
-    print(c.pis())
-    print(c.epis())
 
