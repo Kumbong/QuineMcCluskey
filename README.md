@@ -1,7 +1,10 @@
-# quine_mccluskey
 
-quine_mccluskey is a python implementation of the Quine McClsukey Circuit
-minimization algorithm.
+
+# quine_mccluskey
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+quine_mccluskey is a python implementation of the Quine McClsukey Circuit minimization algorithm.
+
+
 
 ## Installation
 
@@ -18,8 +21,18 @@ pip install quine_mccluskey
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
 Please make sure to update tests as appropriate.
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+### Todos
+
+ - Write Tests
+ - Change project Structure
+ - Implement GUI component
+ - Allow installation as package via pip
+ - Take in command line arguments
+
+License
+----
+
+MIT
+
