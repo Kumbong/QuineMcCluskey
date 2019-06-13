@@ -3,7 +3,6 @@
 # quine_mccluskey
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-
 quine_mccluskey is a python implementation of the Quine McClsukey Circuit minimization algorithm.
 
 
