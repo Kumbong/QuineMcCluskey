@@ -6,13 +6,18 @@ import sys
 
 
 class QM:
-    def __init__(self,minterms,dont_cares=[]):
+    def __init__(self,minterms,dont_cares=[], chars = []):
+
+        minterms = [int(x) for x in minterms]
+        dont_cares = [int(x) for x in dont_cares]
+        
         self.minterms =  self.to_binary(minterms)
 
         if dont_cares:
             self.dont_cares = self.to_binary(dont_cares)
         else:
             self.dont_cares = []
+
         self.prime_implicants = []
 
         self.combined = []
@@ -20,6 +25,9 @@ class QM:
         self.essential_prime_implicants = []
 
         self.coverage_table = {}
+
+        #for example x,y,z  or a,b,c etc
+        self.chars = sorted(chars)
 
     def to_binary(self,minterms=[]):
         """
@@ -30,7 +38,6 @@ class QM:
 
         Returns:
             A list containing the binary represenation of each minterm in minterms
-        Raises:
         """
 
         #get the max number of digits in any minterm
@@ -58,12 +65,11 @@ class QM:
             A new minterm with a dash in the position where the two minterms differ or
             None if they differ by more or less than one position
 
-
-        Raises:
-            ValueError if minterm1 or minterm2 is not in binary format
-            ValueError if both minterms are not of the same length
         """
+
         #get the positions where the two strings differ
+
+     
         pos = [i for i in range(len(min1)) if min1[i] != min2[i]]
 
         if len(pos) == 1:
@@ -85,11 +91,6 @@ class QM:
             A dictionary {'combined': [], 'uncombined': []}
             uncombined are the minterms in the first group that failed to combine
             offspring are the results of the combination of the minterms in the first and second group
-
-
-        Raises:
-            ValueError if any of the minterms in any group is not in binary form
-            ValueError if both minterms are not of the same length
 
         """
         res = []
@@ -118,15 +119,11 @@ class QM:
         Combines the groups in each generation.
 
         Args:
-            generation:  A collection {} of groups to be combined
+            generation:  A collection [] of groups to be combined
             
 
         Returns:
-            A new generation {'new_generation' : {} , 'uncombined' : []} of groups and a 
-            list of uncombined minterms in that generation
-
-        Raises:
-            ValueError if any of the minterms in the generation is not in binary form
+            A new generation [] of groups 
 
         """
         new_gen = []
@@ -165,7 +162,12 @@ class QM:
         return grps
 
     def pis(self):
+        """
+        Computes the prime implicants based on the minterms and dont cares
 
+        Returns:
+            A list containing the prime implicants 
+        """
         mts = self.minterms + self.dont_cares
         gen = self.group_minterms(mts)
     
@@ -210,8 +212,13 @@ class QM:
 
 
 
-    def epis(self):
-        
+    def primary_epis(self):
+        """
+        Computes the essential prime implicants based on the minterms and dont cares
+
+        Returns:
+            A list containing the essential prime implicants 
+        """
         #for each minterm determine all the prime implicants that 
         #can cover it 
         for minterm in self.minterms:
@@ -234,9 +241,53 @@ class QM:
 
         return self.essential_prime_implicants
 
-    def other_pis(self):
+    def secondary_epis(self):
+        """
+        Computes the secondary essential prime implicants
+
+        Returns:
+            A list containing the secondary essential prime implicants 
+        """
+        #adds the secondary essential prime implicants to the epis
         #returns the other non essential prime implicants necessary to  complete the coverage table
         #uses petricks method for computation
         pass
 
 
+    def minimize(self):
+        """
+        Minimizes the circuit and returns the list of terms for minimized circuit
+
+        Returns:
+            A list containing both primary and secondary essential prime implicants 
+        """
+
+        return self.primary_epis()+self.secondary_epis()
+
+    def to_char(self,term,chars):
+        """
+        Converts the binary term to its character representation
+
+        Args:
+            term : A binary string representing the prime implicant
+
+        Returns:
+            A string with the character represenation fro the string
+        """
+
+        i = 0 
+        res = ''
+        for ch in term:
+            if ch == '1':
+                res+=chars[i]
+
+            elif ch == '0':
+                res=res+chars[i]+"'"
+
+            i+=1
+
+        return res
+
+
+
+    
