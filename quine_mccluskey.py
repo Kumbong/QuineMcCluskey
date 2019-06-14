@@ -1,4 +1,4 @@
-from qm.qm import QM
+from core.qm.qm import QM
 import argparse
 
 
@@ -18,8 +18,8 @@ else:
 
 if args.variables:
     variables = args.variables.split(',')
-else:
-    variables = ['x'+str(i) for i in range(len(minterms)+len(dcares))]
+else: 
+    variables = []
 
 
 c = QM(minterms,dcares,variables)

@@ -10,11 +10,13 @@ class QM:
 
         minterms = [int(x) for x in minterms]
         dont_cares = [int(x) for x in dont_cares]
+
+        self.nbits = len(bin(max(minterms))[2:])
         
         self.minterms =  self.to_binary(minterms)
-
         if dont_cares:
             self.dont_cares = self.to_binary(dont_cares)
+
         else:
             self.dont_cares = []
 
@@ -29,19 +31,25 @@ class QM:
         #for example x,y,z  or a,b,c etc
         self.chars = sorted(chars)
 
-    def to_binary(self,minterms=[]):
+    def to_binary(self,minterms=[],nbits = 0):
         """
         Converts every element in minterms to its binary representation.
 
         Args:
             minterms: A list of minterms.
+            nbits: is the the number of bits to be used for the representation
+                    if not specided the value defaults to the len of longest 
+                    binary string in list 
 
         Returns:
             A list containing the binary represenation of each minterm in minterms
         """
 
         #get the max number of digits in any minterm
-        mx = len(bin(max(minterms))[2:])
+        if nbits:
+            mx = nbits
+        else:
+            mx = self.nbits
 
         bminterms = [] #binary minterms
         for minterm in minterms:
@@ -67,9 +75,7 @@ class QM:
 
         """
 
-        #get the positions where the two strings differ
-
-     
+        #get the positions where the two strings differ    
         pos = [i for i in range(len(min1)) if min1[i] != min2[i]]
 
         if len(pos) == 1:
