@@ -8,9 +8,14 @@ import sys
 class QM:
     def __init__(self,minterms,dcares=[], chars = []):
 
+
+        #holds the procedure leading up to the solution
+        self.procedure = ""
+
         #ensure that elements in minterms and dont_cares
         #are all integers
         minterms = [int(x) for x in minterms]
+
 
         if dcares:
             dcares = [int(x) for x in dcares]
@@ -47,6 +52,7 @@ class QM:
         #wether or not to sort chars
         self.chars = sorted(chars)
 
+
     def to_binary(self,minterms=[],nbits = 0):
         """
         Converts every element in minterms to its binary representation.
@@ -64,7 +70,8 @@ class QM:
         Example:
              if minterms[]
         """
-
+        
+        self.procedure+=("\n==================================Converting to Binary==================================\n\n")
         #get the max number of digits in any minterm
         if nbits:
             mx = nbits
@@ -77,6 +84,7 @@ class QM:
             bstr = (mx - len(bstr))*'0'+bstr #append zeroes to the string 
             bminterms.append(bstr)
 
+            self.procedure+=('{:15s} {:64s} \n'.format(str(minterm),bstr))
         return bminterms
    
 
@@ -176,15 +184,28 @@ class QM:
             binary representation
         Raises:
         """
+        self.procedure+= "\n==================================Grouping Minterms==================================\n\n"
         grps = []
         num_groups = len(mts[0])
+
+        self.procedure+= "+-----------------+--------------------------------------------------------------------------------+\n"
+        self.procedure+= ' |{:^15s} {:10s} {:^75s} |\n'.format('Group','|','Minterms')
+        self.procedure+= "+-----------------+--------------------------------------------------------------------------------+\n"
 
         for i in range(num_groups+1):
             grp = [x for x in mts if x.count('1')==i]
 
             if grp:
                 grps.append(grp)
+            
+                self.procedure+=' |{:^15d} {:^10s} {:^75s} |\n'.format(i,'|',grp[0])
+                
+                for j in range(1,len(grp)):
+                    self.procedure+=' |{:^15s} {:^10s} {:^75s} |\n'.format('_','|',grp[j])
 
+                self.procedure+= "+-----------------+---------------------------------------------------------------------------+\n"
+
+                    
         return grps
 
     def pis(self):
