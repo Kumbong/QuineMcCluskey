@@ -1,24 +1,26 @@
 
 
-# quine_mccluskey
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+# Quine McCluskey Circuit Minimizer
 
-quine_mccluskey is a python implementation of the Quine McClsukey Circuit minimization algorithm.
+A CLI/GUI tool for minimizing sum of products via the Quine McCluskey minimization technique. 
 
-
-
-## Installation
-
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install quine_mccluskey.
-
-```bash
-pip install quine_mccluskey
-```
 
 ## Usage
-
+Run the circuit minimizer with the minterms
 ```python
+    python quine_mccluskey.py minterms
 ```
+Example
+```python
+    python quine_mccluskey.py 1,2,3,5,6,7,9,13,15
+```
+You can also use these optional arguments according to your needs: **-d**,**--dont_cares**  and **-v**,**--variables** 
+
+Example
+```python
+    python quine_mccluskey.py 1,2,3,5,6,7,9,13,15 -d 0,8,12 -v a,b,c,d
+```
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -26,11 +28,8 @@ Please make sure to update tests as appropriate.
 
 ### Todos
 
- - Write Tests
- - Change project Structure
+ - Allow display of steps that lead to solution 
  - Implement GUI component
- - Allow installation as package via pip
- - Take in command line arguments
 
 License
 ----
