@@ -1,5 +1,4 @@
 
-
 # Quine McCluskey Circuit Minimizer
 
 A CLI/GUI tool for minimizing sum of products via the Quine McCluskey minimization technique. 
