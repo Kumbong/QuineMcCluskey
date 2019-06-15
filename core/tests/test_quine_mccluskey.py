@@ -1,5 +1,5 @@
 from unittest import TestCase, main
-from src.qm.qm import QM
+from core.qm.qm import QM
 
 class TestQM(TestCase):
     def setup(self):

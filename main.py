@@ -7,7 +7,7 @@ parser.add_argument('minterms', metavar='m', type=str, nargs='+',
 help='comma seperated list of minterms to be reduced')
 parser.add_argument("-d", "--dont_cares", default="", help="comma seperated list of don't cares")
 parser.add_argument("-v", "--variables", default="", help="comma seperated list of variables")
-#parser.add_argument("-ss", "--show_steps", default="yes", help="show steps leading to solution")
+parser.add_argument("-s", "--show_steps", default="yes", help="show steps leading to solution")
 
 args = parser.parse_args()
 
@@ -31,10 +31,13 @@ print('Prime implicants')
 print(c.pis())
 
 print('Essential prime implicants')
+print(c.coverage_table)
 epis = c.primary_epis()
 
 
 print(epis)
-print('Essential prime implicants in variable form')
-chars = list(map(lambda x: c.to_char(x,variables),epis))
-print(chars)
+#print('Essential prime implicants in variable form')
+#chars = list(map(lambda x: c.to_char(x,variables),epis))
+#print(chars)
+
+print(c.coverage_table)

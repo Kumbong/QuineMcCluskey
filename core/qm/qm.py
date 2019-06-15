@@ -6,29 +6,45 @@ import sys
 
 
 class QM:
-    def __init__(self,minterms,dont_cares=[], chars = []):
+    def __init__(self,minterms,dcares=[], chars = []):
 
+        #ensure that elements in minterms and dont_cares
+        #are all integers
         minterms = [int(x) for x in minterms]
-        dont_cares = [int(x) for x in dont_cares]
 
+        if dcares:
+            dcares = [int(x) for x in dcares]
+    
+
+        #get the number of bits to represent each binary
+        #string. number of bits is the same as that needed
+        # to represent the longest binary string 
         self.nbits = len(bin(max(minterms))[2:])
         
+        #convert minterms and dont cares to binary
         self.minterms =  self.to_binary(minterms)
-        if dont_cares:
-            self.dont_cares = self.to_binary(dont_cares)
+        
+        if dcares:
+            self.dont_cares = self.to_binary(dcares)
 
         else:
             self.dont_cares = []
 
+        #holds all prime implicants based on dont cares and minterms
         self.prime_implicants = []
 
+        #holds all minterms and dont cares that have combined
         self.combined = []
 
+        #holds all essential prime implicants based on minterms
+        #dont cares
         self.essential_prime_implicants = []
 
+        #coverage table used in determining essential prime implicants
         self.coverage_table = {}
 
         #for example x,y,z  or a,b,c etc
+        #wether or not to sort chars
         self.chars = sorted(chars)
 
     def to_binary(self,minterms=[],nbits = 0):
@@ -43,6 +59,10 @@ class QM:
 
         Returns:
             A list containing the binary represenation of each minterm in minterms
+            Each binary string nbits long
+
+        Example:
+             if minterms[]
         """
 
         #get the max number of digits in any minterm
@@ -239,11 +259,16 @@ class QM:
         for minterm in self.minterms:
             if len(self.coverage_table[minterm]) == 1:
                 self.essential_prime_implicants.append(self.coverage_table.pop(minterm)[0])
-
-                #remove the minterms that are covered from the coverage table            
-
+           
         #filter out any prime implicants that appear twice
         self.essential_prime_implicants = list(set(self.essential_prime_implicants))
+
+        #reduce the coverage table to include only minterms not covered by the 
+        #essential prime implicants
+
+        self.coverage_table = {k:v for k,v in self.coverage_table.items() if \
+            not set(v).intersection(set(self.essential_prime_implicants))}
+      
 
         return self.essential_prime_implicants
 
@@ -260,13 +285,22 @@ class QM:
         pass
 
 
-    def minimize(self):
+    def minimize(self,mterms=[],dcares=[],variables=[]):
         """
         Minimizes the circuit and returns the list of terms for minimized circuit
 
         Returns:
             A list containing both primary and secondary essential prime implicants 
         """
+
+        if mterms:
+            self.minterms = mterms
+        
+        if dcares:
+            self.dont_cares = dcares
+
+        if variables:
+            self.chars = variables
 
         return self.primary_epis()+self.secondary_epis()
 
