@@ -3,7 +3,9 @@
 #change doc strings 
 #add GUI and terminal interfaces
 import sys
+from colorclass import Color, Windows
 
+from terminaltables import AsciiTable
 
 class QM:
     def __init__(self,minterms,dcares=[], chars = []):
@@ -71,7 +73,7 @@ class QM:
              if minterms[]
         """
         
-        self.procedure+=("\n==================================Converting to Binary==================================\n\n")
+        
         #get the max number of digits in any minterm
         if nbits:
             mx = nbits
@@ -84,7 +86,6 @@ class QM:
             bstr = (mx - len(bstr))*'0'+bstr #append zeroes to the string 
             bminterms.append(bstr)
 
-            self.procedure+=('{:15s} {:64s} \n'.format(str(minterm),bstr))
         return bminterms
    
 
@@ -184,28 +185,41 @@ class QM:
             binary representation
         Raises:
         """
-        self.procedure+= "\n==================================Grouping Minterms==================================\n\n"
+        #sort  the minterms for presentation purpose
+        mts.sort()
         grps = []
         num_groups = len(mts[0])
 
-        self.procedure+= "+-----------------+--------------------------------------------------------------------------------+\n"
-        self.procedure+= ' |{:^15s} {:10s} {:^75s} |\n'.format('Group','|','Minterms')
-        self.procedure+= "+-----------------+--------------------------------------------------------------------------------+\n"
+
+        ##########################for printing to the console##################################
+        table_data = [
+        [Color('{autogreen}Group{/autogreen}'),Color('{autogreen}Minterms (decimal){/autogreen}'), Color('{autogreen}Minterms (binary){/autogreen}')]
+        ]
+        table = AsciiTable(table_data)
+        table.inner_row_border = True
+
+        self.procedure+=Color('{autoblue}==========================\nStep 1 : Grouping Minterms\n==========================\n{/autoblue}\n')
+        #########################################################################################
 
         for i in range(num_groups+1):
             grp = [x for x in mts if x.count('1')==i]
 
             if grp:
                 grps.append(grp)
-            
-                self.procedure+=' |{:^15d} {:^10s} {:^75s} |\n'.format(i,'|',grp[0])
+
+        ##################################for printing to the console###############################
+                table_data.append([i,str(int(grp[0],2)),grp[0]])
                 
                 for j in range(1,len(grp)):
-                    self.procedure+=' |{:^15s} {:^10s} {:^75s} |\n'.format('_','|',grp[j])
-
-                self.procedure+= "+-----------------+---------------------------------------------------------------------------+\n"
-
+                    table.table_data[i][1]+="\n"+str(int(grp[j],2))
+                    table.table_data[i][2]+="\n"+grp[j]
                     
+
+        self.procedure+=str(table.table)
+        ###########################################################################################
+
+        
+           
         return grps
 
     def pis(self):
@@ -216,21 +230,63 @@ class QM:
             A list containing the prime implicants 
         """
         mts = self.minterms + self.dont_cares
-        gen = self.group_minterms(mts)
+        new_gen = self.group_minterms(mts)
     
-    
-        new_gen = gen
+        #holds all the generations that are reached, used mainly for printing
+        all_gens = [new_gen]
         
         while new_gen:
             for x in new_gen:
                 for y in x:
                     self.prime_implicants.append(y)
 
-            n = self.combine_generation(new_gen)
-            new_gen = n
+            new_gen = self.combine_generation(new_gen)
+            
+
+            if new_gen:
+                all_gens.append(new_gen)
 
         self.prime_implicants = [pi for pi in self.prime_implicants if pi not in self.combined]
         
+        
+        table_data = [
+            []
+        ]
+        for gen in all_gens:
+            i = all_gens.index(gen)
+
+            table_data[0].append(Color('{autogreen} Stage '+str(i)+'{/autogreen}'))
+            
+            
+        for gen in all_gens:
+            i = all_gens.index(gen)
+            for grp in gen:
+                #only add rows for the first generation
+                j = gen.index(grp)
+
+                if i == 0:
+                    temp = ["" for x in table_data[0]]
+                    table_data.append(temp)
+
+                for mt in grp:
+                    table_data[j+1][i]+=str(mt)+"  "
+
+                    if mt in self.combined:
+                        table_data[j+1][i]+=u'\u2713'
+
+                    else:
+                        table_data[j+1][i]+='*'
+
+                    table_data[j+1][i]+="\n"
+
+        table = AsciiTable(table_data)
+        table.inner_row_border = True
+
+        self.procedure+=Color('\n\n{autoblue}===========================\nStep 2 : Combining Minterms\n===========================\n{/autoblue}\n')
+        self.procedure+=table.table
+
+        print(self.procedure)
+
 
         return self.prime_implicants
         
