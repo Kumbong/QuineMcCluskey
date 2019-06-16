@@ -285,7 +285,7 @@ class QM:
         self.procedure+=Color('\n\n{autoblue}===========================\nStep 2 : Combining Minterms\n===========================\n{/autoblue}\n')
         self.procedure+=table.table
 
-        print(self.procedure)
+    
 
 
         return self.prime_implicants
@@ -332,6 +332,30 @@ class QM:
                     self.coverage_table[minterm].append(pi)
 
         #find the prime implicants that are the only one covering any minterm
+         #for printing the coverage table
+
+        #################################################################################################
+        table_data = [['']+[Color('{autogreen}'+str(int(x,2))+'{/autogreen}') for x in self.minterms]]
+
+    
+        for pi in self.prime_implicants:
+            table_data.append([Color('{autogreen}'+pi+'{/autogreen}')]+['' for x in self.minterms])
+
+            for mt in self.minterms:
+                if pi in self.coverage_table[mt]:
+                    table_data[self.prime_implicants.index(pi)+1][self.minterms.index(mt)+1]='X'
+
+                    if len(self.coverage_table[mt]) == 1:
+                        table_data[self.prime_implicants.index(pi)+1][self.minterms.index(mt)+1]=Color('{autored}X{/autored}')
+
+        table = AsciiTable(table_data)
+        table.inner_row_border = True
+
+        self.procedure+=Color('\n\n{autoblue}========================\nStep 3 : Coverage Chart\n========================\n{/autoblue}\n')
+        self.procedure+=table.table
+
+        print(self.procedure)
+        #################################################################################################
 
         for minterm in self.minterms:
             if len(self.coverage_table[minterm]) == 1:
@@ -340,6 +364,7 @@ class QM:
         #filter out any prime implicants that appear twice
         self.essential_prime_implicants = list(set(self.essential_prime_implicants))
 
+       
         #reduce the coverage table to include only minterms not covered by the 
         #essential prime implicants
 

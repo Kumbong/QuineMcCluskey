@@ -145,8 +145,9 @@ class QMWidget(QWidget):
             vs = self.v_edit.text().split(' ')
             vs = list(filter(lambda x: x,vs))
             print(mts)
-            qm = QM(mts,dcs,vs)
+            qm = QM([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],dcs,vs)
             pis = qm.pis()
+            qm.primary_epis()
             self.bigEditor.append('Prime Implicants')
             
             for pi in pis:
