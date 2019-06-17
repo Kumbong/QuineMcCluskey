@@ -30,7 +30,7 @@ class QMWidget(QWidget):
         self.setLayout(mainLayout)
 
         self.setWindowTitle("QM Circuit Minimizer")
-        self.setWindowIcon(QIcon("gui/logo.jpeg"))
+        self.setWindowIcon(QIcon("assets/images/win_icon.jpeg"))
         self.setMinimumWidth(500)
 
         
@@ -144,16 +144,17 @@ class QMWidget(QWidget):
 
             vs = self.v_edit.text().split(' ')
             vs = list(filter(lambda x: x,vs))
-            print(mts)
-            qm = QM([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],dcs,vs)
+            
+            qm = QM(mts,dcs,vs)
             pis = qm.pis()
             qm.primary_epis()
             self.bigEditor.append('Prime Implicants')
             
+            print(qm.procedure)
             for pi in pis:
                 self.bigEditor.append(qm.procedure)
                 self.bigEditor.append('\n')
-        
+                    
 if __name__ == '__main__':
 
     import sys

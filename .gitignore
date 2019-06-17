@@ -6,7 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+#idea 
+.idea/
+
 #visual studio code 
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

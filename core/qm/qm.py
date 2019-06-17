@@ -219,7 +219,6 @@ class QM:
         ###########################################################################################
 
         
-           
         return grps
 
     def pis(self):
@@ -286,8 +285,6 @@ class QM:
         self.procedure+=table.table
 
     
-
-
         return self.prime_implicants
         
             
@@ -339,7 +336,7 @@ class QM:
 
     
         for pi in self.prime_implicants:
-            table_data.append([Color('{autogreen}'+pi+'{/autogreen}')]+['' for x in self.minterms])
+            table_data.append([pi]+['' for x in self.minterms])
 
             for mt in self.minterms:
                 if pi in self.coverage_table[mt]:
@@ -348,19 +345,19 @@ class QM:
                     if len(self.coverage_table[mt]) == 1:
                         table_data[self.prime_implicants.index(pi)+1][self.minterms.index(mt)+1]=Color('{autored}X{/autored}')
 
-        table = AsciiTable(table_data)
-        table.inner_row_border = True
-
-        self.procedure+=Color('\n\n{autoblue}========================\nStep 3 : Coverage Chart\n========================\n{/autoblue}\n')
-        self.procedure+=table.table
-
-        print(self.procedure)
+        table_data.append(['']+['' for x in self.minterms])
+       
         #################################################################################################
 
         for minterm in self.minterms:
             if len(self.coverage_table[minterm]) == 1:
-                self.essential_prime_implicants.append(self.coverage_table.pop(minterm)[0])
+                self.essential_prime_implicants.append(self.coverage_table[minterm][0])
            
+        #tick for the prime implicants that are covered
+        for minterm in self.minterms:
+            if set(self.coverage_table[minterm]).intersection(set(self.essential_prime_implicants)):
+                table_data[-1][self.minterms.index(minterm)+1]=u'\u2713'
+
         #filter out any prime implicants that appear twice
         self.essential_prime_implicants = list(set(self.essential_prime_implicants))
 
@@ -371,6 +368,11 @@ class QM:
         self.coverage_table = {k:v for k,v in self.coverage_table.items() if \
             not set(v).intersection(set(self.essential_prime_implicants))}
       
+        table = AsciiTable(table_data)
+        table.inner_row_border = True
+
+        self.procedure+=Color('\n\n{autoblue}=======================\nStep 3 : Coverage Chart\n=======================\n{/autoblue}\n')
+        self.procedure+=table.table
 
         return self.essential_prime_implicants
 
