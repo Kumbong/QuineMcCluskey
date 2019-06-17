@@ -1,4 +1,3 @@
-![](assets/images/logo.png)
 
 # Quine McCluskey Circuit Minimizer
 
