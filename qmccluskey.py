@@ -55,7 +55,8 @@ if args.show_steps.lower() != 'yes' and args.show_steps.lower() != 'no':
 qm = QM(minterms,dcares,variables)
 pis = qm.pis()
 epis = qm.primary_epis()
-
+sepis =  qm.secondary_epis()
+print(sepis)
 if args.show_steps == 'yes':
     print(qm.procedure)
 

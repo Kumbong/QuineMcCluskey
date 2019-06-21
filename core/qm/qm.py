@@ -4,9 +4,10 @@
 #add GUI and terminal interfaces
 import sys
 from colorclass import Color, Windows
-
+from core.qm.petrick import multiply, remove_dups, multiply_all,reduce_expr,min_len_terms,count_literals, fewest_literals
 from terminaltables import AsciiTable
-
+import string
+import random
 class QM:
     def __init__(self,minterms,dcares=[], chars = []):
 
@@ -386,9 +387,55 @@ class QM:
         #adds the secondary essential prime implicants to the epis
         #returns the other non essential prime implicants necessary to  complete the coverage table
         #uses petricks method for computation
-        pass
 
+        print('IN secondary Epis')
+        mapvals = list(string.ascii_letters + string.digits)
+        mapped = []
+        charmap = {}
+        prod = []
+        for mterm in self.coverage_table:
+            strrep = ""
+            for t in self.coverage_table[mterm]:
+                #map it to a character 
+                if t not in mapped:
+                    ch= random.choice(mapvals)
+                    charmap[ch] = t
+                    mapped.append(t)
+                    mapvals.remove(ch)
+                #do the rest on the character rather 
+                if t == self.coverage_table[mterm][-1]:
+                    strrep+=ch
 
+                else:
+                    strrep+=ch+'+'
+
+            #print(charmap)
+            prod.append(strrep)
+
+        # print('prime implicants',self.prime_implicants)
+        # print('essential prime implicants ',self.essential_prime_implicants)
+    
+        prod = multiply_all(['k+l','k+m','l+n','m+p','n+q','p+q'])
+
+        print('production in secondary epis')
+        print(prod)
+        # prod = remove_dups(prod)
+        
+        # print(prod)
+        # prod = (reduce_expr(prod))
+        # print(prod)
+        # prod = min_len_terms(prod)
+        # print(prod)
+
+        # print(charmap)
+        # prod = list(map(lambda ch: charmap[ch],prod))
+        # print(prod)
+        #print(charmap)
+        #prod = fewest_literals(prod)
+
+        return prod
+
+        #print(count_literals('00_1'))
     def minimize(self,mterms=[],dcares=[],variables=[]):
         """
         Minimizes the circuit and returns the list of terms for minimized circuit
@@ -433,5 +480,5 @@ class QM:
         return res
 
 
-
+    #implementation of petrick's algorithm
     
