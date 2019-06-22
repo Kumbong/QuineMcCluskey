@@ -219,7 +219,6 @@ class QM:
         self.procedure+=str(table.table)
         ###########################################################################################
 
-        print(grps)
         return grps
 
     def pis(self):
@@ -465,8 +464,6 @@ class QM:
             A list containing both primary and secondary essential prime implicants 
         """
 
-
-
         pis = self.pis()
 
         essential_pi_sol = ""
@@ -496,7 +493,7 @@ class QM:
         self.procedure+=Color('\n\n{autoblue}========\nSolution \n========\n{/autoblue}\n')
         self.procedure+=possible_solutions[0]+'\n'
 
-        if len(self.procedure) > 1:
+        if len(possible_solutions) > 1:
             self.procedure+=Color('\n\n{autoblue}========================\nOther Possible Solutions \n========================\n{/autoblue}\n')
             
             for i in range(1,len(possible_solutions)):
