@@ -53,10 +53,19 @@ if args.show_steps.lower() != 'yes' and args.show_steps.lower() != 'no':
     
 #simply expression and print solution if necessary
 qm = QM(minterms,dcares,variables)
-pis = qm.pis()
-epis = qm.primary_epis()
-sepis =  qm.secondary_epis()
-print(sepis)
+# pis = qm.pis()
+# epis = qm.primary_epis()
+# sepis =  qm.secondary_epis()
+
+sols = qm.minimize()
 if args.show_steps == 'yes':
     print(qm.procedure)
+
+else:
+    print('Solution')
+    print(sols[0])
+
+    if len(sols)>1:
+        for i in range(1,len(sols)):
+            print(sols[i])
 

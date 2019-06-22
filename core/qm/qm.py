@@ -212,14 +212,14 @@ class QM:
                 table_data.append([i,str(int(grp[0],2)),grp[0]])
                 
                 for j in range(1,len(grp)):
-                    table.table_data[i][1]+="\n"+str(int(grp[j],2))
-                    table.table_data[i][2]+="\n"+grp[j]
+                    table.table_data[i+1][1]+="\n"+str(int(grp[j],2))
+                    table.table_data[i+1][2]+="\n"+grp[j]
                     
 
         self.procedure+=str(table.table)
         ###########################################################################################
 
-        
+        print(grps)
         return grps
 
     def pis(self):
@@ -285,7 +285,12 @@ class QM:
         self.procedure+=Color('\n\n{autoblue}===========================\nStep 2 : Combining Minterms\n===========================\n{/autoblue}\n')
         self.procedure+=table.table
 
-    
+        self.procedure+=Color('\n\n{autoblue} Prime Implicants {/autoblue}\n ----------------\n')
+        
+        for pi in self.prime_implicants:
+            ch = self.to_char(pi,self.chars) if self.chars else ''
+            self.procedure+=('  '+pi + ' ('+ch +') '+'\n')
+
         return self.prime_implicants
         
             
@@ -354,6 +359,7 @@ class QM:
             if len(self.coverage_table[minterm]) == 1:
                 self.essential_prime_implicants.append(self.coverage_table[minterm][0])
            
+        
         #tick for the prime implicants that are covered
         for minterm in self.minterms:
             if set(self.coverage_table[minterm]).intersection(set(self.essential_prime_implicants)):
@@ -362,7 +368,6 @@ class QM:
         #filter out any prime implicants that appear twice
         self.essential_prime_implicants = list(set(self.essential_prime_implicants))
 
-       
         #reduce the coverage table to include only minterms not covered by the 
         #essential prime implicants
 
@@ -375,6 +380,13 @@ class QM:
         self.procedure+=Color('\n\n{autoblue}=======================\nStep 3 : Coverage Chart\n=======================\n{/autoblue}\n')
         self.procedure+=table.table
 
+        if self.essential_prime_implicants:
+            self.procedure+=Color('\n\n{autoblue} Primary Essential Prime Implicants {/autoblue}\n ---------------------------------------\n')
+        
+            for pi in self.essential_prime_implicants:
+                ch = self.to_char(pi,self.chars) if self.chars else ''
+                self.procedure+=('  '+pi + ' ('+ch +') '+'\n')
+    
         return self.essential_prime_implicants
 
     def secondary_epis(self):
@@ -387,8 +399,6 @@ class QM:
         #adds the secondary essential prime implicants to the epis
         #returns the other non essential prime implicants necessary to  complete the coverage table
         #uses petricks method for computation
-
-        print('IN secondary Epis')
         mapvals = list(string.ascii_letters + string.digits)
         mapped = []
         charmap = {}
@@ -402,41 +412,52 @@ class QM:
                     charmap[ch] = t
                     mapped.append(t)
                     mapvals.remove(ch)
-                #do the rest on the character rather 
+                else:
+                    for key in charmap:
+                        if t in charmap[key]:
+                            ch = key
+
+                #add the corresponding character to a list
+               # c = [x for x in mapped if t in self.coverage_table[x]][0]
                 if t == self.coverage_table[mterm][-1]:
                     strrep+=ch
 
                 else:
                     strrep+=ch+'+'
-
-            #print(charmap)
             prod.append(strrep)
 
         # print('prime implicants',self.prime_implicants)
         # print('essential prime implicants ',self.essential_prime_implicants)
-    
-        prod = multiply_all(['k+l','k+m','l+n','m+p','n+q','p+q'])
-
-        print('production in secondary epis')
-        print(prod)
-        # prod = remove_dups(prod)
         
-        # print(prod)
-        # prod = (reduce_expr(prod))
-        # print(prod)
-        # prod = min_len_terms(prod)
-        # print(prod)
+        new_prod = []
+        if prod:
+            prod = multiply_all(prod)
 
-        # print(charmap)
-        # prod = list(map(lambda ch: charmap[ch],prod))
-        # print(prod)
-        #print(charmap)
-        #prod = fewest_literals(prod)
+            prod = remove_dups(prod)
+            
+            # print(prod)
+            prod = (reduce_expr(prod))
+            #print(prod)
+            prod = min_len_terms(prod)
+            #print(prod)
+            prod = fewest_literals(prod)
+       
+            for t in prod:
+                tempstr = ""
+                for s in t:
+                    ch = self.to_char(charmap[s],self.chars) if self.chars else charmap[s]
+                    if s == t[-1]:
+                        tempstr+= ch
+                    else:
+                        tempstr+=ch+' + '
+                new_prod.append(tempstr)
 
-        return prod
+            #print(new_prod)
+            #convertback
+        return new_prod
 
         #print(count_literals('00_1'))
-    def minimize(self,mterms=[],dcares=[],variables=[]):
+    def minimize(self):
         """
         Minimizes the circuit and returns the list of terms for minimized circuit
 
@@ -444,16 +465,44 @@ class QM:
             A list containing both primary and secondary essential prime implicants 
         """
 
-        if mterms:
-            self.minterms = mterms
+
+
+        pis = self.pis()
+
+        essential_pi_sol = ""
+
+        primary_epis = self.primary_epis()
+
+        for pi in primary_epis:
+            ch = self.to_char(pi,self.chars) if self.chars else pi
+
+            if pi == primary_epis[-1]:
+                essential_pi_sol+=ch
+            else:
+                essential_pi_sol+=ch+' + '
         
-        if dcares:
-            self.dont_cares = dcares
+        secondary_epi_sols = self.secondary_epis()
+        possible_solutions = []
 
-        if variables:
-            self.chars = variables
+        if secondary_epi_sols:
+            for spi in secondary_epi_sols:
+                if essential_pi_sol:
+                    possible_solutions.append(essential_pi_sol+' + '+spi)
+                else:
+                    possible_solutions.append(spi)
+        else:
+            possible_solutions.append(essential_pi_sol)
 
-        return self.primary_epis()+self.secondary_epis()
+        self.procedure+=Color('\n\n{autoblue}========\nSolution \n========\n{/autoblue}\n')
+        self.procedure+=possible_solutions[0]+'\n'
+
+        if len(self.procedure) > 1:
+            self.procedure+=Color('\n\n{autoblue}========================\nOther Possible Solutions \n========================\n{/autoblue}\n')
+            
+            for i in range(1,len(possible_solutions)):
+                self.procedure+=possible_solutions[i]+'\n'
+
+        return possible_solutions
 
     def to_char(self,term,chars):
         """
