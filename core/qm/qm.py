@@ -337,8 +337,8 @@ class QM:
         
         #print each prime implicant alongside its character represenation if it exits
         for pi in self.prime_implicants:
-            ch = self.to_char(pi,self.chars) if self.chars else ''
-            self.procedure+=('  '+pi + ' ('+ch +') '+'\n')
+            ch = ' ('+self.to_char(pi,self.chars)+') ' if self.chars else ''
+            self.procedure+=('  '+pi+ch+'\n')
 
         return self.prime_implicants
         
@@ -433,8 +433,8 @@ class QM:
             self.procedure+=Color('\n\n{autoblue} Primary Essential Prime Implicants {/autoblue}\n ----------------------------------\n')
         
             for pi in self.essential_prime_implicants:
-                ch = self.to_char(pi,self.chars) if self.chars else ''
-                self.procedure+=('  '+pi + ' ('+ch +') '+'\n')
+                ch = ' ('+self.to_char(pi,self.chars)+') ' if self.chars else ''
+                self.procedure+=('  '+pi + ch +'\n')
     
         return self.essential_prime_implicants
 

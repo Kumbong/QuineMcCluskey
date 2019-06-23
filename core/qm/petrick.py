@@ -2,6 +2,18 @@
 
 #read more about petrick's method here https://en.wikipedia.org/wiki/Petrick%27s_method
 def multiply(t1,t2):
+    """
+        Multiplies (expands) two binary expressions t1 and t2 based on the distributive rule
+
+        Args:
+            t1 (str): first binary expression
+            t2 (str): second binary expression
+
+        Returns:
+            A string representing the expansion of the boolean algebraic expressions
+
+
+        """
     t1 = t1.split('+')
     t2 = t2.split('+')
 
@@ -29,6 +41,16 @@ def multiply(t1,t2):
 
 
 def remove_dups(expr):
+    """
+        Removes duplicates from an expression 
+
+        Args:
+            expr (str): Expression to be simplified
+
+        Returns:
+            A string representing the simplified version of the expression
+
+        """
     #removes duplicates from the expression both repeating characters and 
     #repeating terms
 
