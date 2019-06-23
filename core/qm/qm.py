@@ -241,14 +241,16 @@ class QM:
             if grp:
                 grps.append(grp)
 
+        for i in range(len(grps)):
         ##################################for printing to the console###############################
-                table_data.append([i,str(int(grp[0],2)),grp[0]])
+            num_ones = grps[i][0].count('1')
+            grp = grps[i]
+            table_data.append([num_ones,str(int(grp[0],2)),grp[0]])
+     
+            for j in range(1,len(grp)):
+                table.table_data[i+1][1]+="\n"+str(int(grp[j],2))
+                table.table_data[i+1][2]+="\n"+grp[j]
                 
-                for j in range(1,len(grp)):
-                    table.table_data[i+1][1]+="\n"+str(int(grp[j],2))
-                    table.table_data[i+1][2]+="\n"+grp[j]
-                    
-
         self.procedure+=str(table.table)
         ###########################################################################################
 
@@ -378,7 +380,6 @@ class QM:
         for minterm in self.minterms:
             self.coverage_table[minterm] = []
             for pi in self.prime_implicants:
-                #print(minterm,'   ',pi)
                 if self.can_cover(pi,minterm):
                     self.coverage_table[minterm].append(pi)
 
@@ -429,7 +430,7 @@ class QM:
         self.procedure+=table.table
 
         if self.essential_prime_implicants:
-            self.procedure+=Color('\n\n{autoblue} Primary Essential Prime Implicants {/autoblue}\n ---------------------------------------\n')
+            self.procedure+=Color('\n\n{autoblue} Primary Essential Prime Implicants {/autoblue}\n ----------------------------------\n')
         
             for pi in self.essential_prime_implicants:
                 ch = self.to_char(pi,self.chars) if self.chars else ''
@@ -513,11 +514,9 @@ class QM:
                         tempstr+=ch+' + '
                 new_prod.append(tempstr)
 
-            #print(new_prod)
             #convertback
         return new_prod
 
-        #print(count_literals('00_1'))
     def minimize(self):
         """
         Minimizes the circuit and returns the list of terms for minimized circuit

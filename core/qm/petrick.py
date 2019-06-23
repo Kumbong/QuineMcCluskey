@@ -1,5 +1,6 @@
 
 
+#read more about petrick's method here https://en.wikipedia.org/wiki/Petrick%27s_method
 def multiply(t1,t2):
     t1 = t1.split('+')
     t2 = t2.split('+')
@@ -57,6 +58,7 @@ def remove_dups(expr):
     return temp_expr
 
 def multiply_all(terms):
+
     prod = terms[0]
     for i in range(1,len(terms)):
         # print('terms [i] ',terms[i])
@@ -66,7 +68,16 @@ def multiply_all(terms):
     return prod
 
 def reduce_expr(expr):
+    """
+        Reduces a boolean algebraic expression based on the identity X + XY = X
 
+        Args:
+            expr (str): representation of the boolean algebraic expression
+
+        Returns:
+            A string representing the reduced algebraic expression
+
+        """
     reduced = True
     for term in expr:
         matches = [t for t in expr if t!=term and len(set(term).intersection(set(t))) == len(term)]
@@ -94,6 +105,17 @@ def reduce_expr(expr):
     return expr
 
 def min_len_terms(terms):
+    """
+        Finds the shortest term
+
+        Args:
+            terms: A list of terms 
+
+        Returns:
+           The terms that have the minimum length
+
+        """
+
     minlen = len(min(terms,key=lambda x: len(x)))
 
     terms = [term for term in terms if len(term) == minlen]
@@ -101,6 +123,17 @@ def min_len_terms(terms):
     return terms
 
 def count_literals(term):
+    """
+        Counts the number of literals in a term
+
+        Args:
+            term : A string containing literals
+            
+
+        Returns:
+            The number of literals in term
+        """
+
     count = 0
     for char in term:
         if char != "_":
@@ -109,6 +142,17 @@ def count_literals(term):
     return count
 
 def fewest_literals(terms):
+    """
+        Returns the terms that contain the fewest number of literals
+
+        Args:
+            terms: A list of of terms 
+
+        Returns:
+            A list of minterms with the fewest number of literals
+
+        """
+
     #returns the terms with the fewest literals
     min_count = count_literals(min(terms,key=lambda x: count_literals(x)))
 
