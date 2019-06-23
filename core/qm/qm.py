@@ -1,25 +1,40 @@
 #TODO
-#coverage table
 #change doc strings 
-#add GUI and terminal interfaces
+#Colorclass not working on windows 
+
 import sys
 from colorclass import Color, Windows
 from core.qm.petrick import multiply, remove_dups, multiply_all,reduce_expr,min_len_terms,count_literals, fewest_literals
 from terminaltables import AsciiTable
 import string
 import random
+
+
 class QM:
+    '''QM is the main class for that with operations for the quine mccluskey 
+        circuit minimization
+
+    Args:
+        minterms (list): compulsary list of minterms
+        *args: The variable arguments are used for...
+        **kwargs: The keyword arguments are used for...
+
+    Attributes:
+        arg (str): This is where we store arg,
+    '''
+
     def __init__(self,minterms,dcares=[], chars = []):
 
 
         #holds the procedure leading up to the solution
+        #used to allow user to have the option to print the solution steos or not
         self.procedure = ""
 
         #ensure that elements in minterms and dont_cares
         #are all integers
         minterms = [int(x) for x in minterms]
 
-
+        #ensure the dont cares are initially integers
         if dcares:
             dcares = [int(x) for x in dcares]
     
@@ -32,6 +47,7 @@ class QM:
         #convert minterms and dont cares to binary
         self.minterms =  self.to_binary(minterms)
         
+        
         if dcares:
             self.dont_cares = self.to_binary(dcares)
 
@@ -42,6 +58,8 @@ class QM:
         self.prime_implicants = []
 
         #holds all minterms and dont cares that have combined
+        #allows easy reference accross different methods to 
+        #know which minterms have or have not combined
         self.combined = []
 
         #holds all essential prime implicants based on minterms
@@ -83,7 +101,10 @@ class QM:
 
         bminterms = [] #binary minterms
         for minterm in minterms:
+            # [2:]remove's 0b from the begining of the binary string 
             bstr = bin(minterm)[2:] 
+            #get the difference in length (bits) between the minterm 
+            #and the longest minterm and prepend zeros to fillup
             bstr = (mx - len(bstr))*'0'+bstr #append zeroes to the string 
             bminterms.append(bstr)
 
@@ -108,11 +129,13 @@ class QM:
         #get the positions where the two strings differ    
         pos = [i for i in range(len(min1)) if min1[i] != min2[i]]
 
+        #if two terms differ by exactly 1 position return a new string with an underscore
+        #in the positions in which they differ
         if len(pos) == 1:
             i = pos[0] #i is the index of the single difference position
             return min1[:i] + '_' + min1[i+1:]
 
-    
+        #nothing returned if both cant combined. 
 
     def combine_groups(self,group1=[],group2=[]):
         """
@@ -129,7 +152,8 @@ class QM:
             offspring are the results of the combination of the minterms in the first and second group
 
         """
-        res = []
+        #holds the result from the combination of the two groups
+        result = []
 
 
         #prime_implicants+=group1 + group2
@@ -138,16 +162,18 @@ class QM:
             for mt2 in group2:
                 offspring = self.combine(mt1,mt2)
                 
+                #if both minterms combine add the offspring to those that have combined
                 if offspring:
                     has_combined = True
 
                     self.combined.append(mt1)
                     self.combined.append(mt2)
 
-                    if offspring not in res:
-                        res.append(offspring)
+                    #prevent duplicates in the results
+                    if offspring not in result:
+                        result.append(offspring)
     
-        return res
+        return result
 
 
     def combine_generation(self,generation=[]):
@@ -162,11 +188,15 @@ class QM:
             A new generation [] of groups 
 
         """
+        #A  generation is defined as a collection of groups of minterms 
+        # during a given stage of the minimization Ex.
+        # [[0000],[0001,1000],[1100,0101,1001]] is a generation
         new_gen = []
     
         for i in range(len(generation)-1):
             new_group = self.combine_groups(generation[i],generation[i+1])
                     
+            #a group may not result from the combination i.e no minterms combine
             if new_group:
                 new_gen.append(new_group)
 
@@ -184,11 +214,14 @@ class QM:
             A dictionary of minterms where each key represents the number of ones present in the binary
             representation and each value is a list of minterms with an equal number of ones in their 
             binary representation
+            
         Raises:
         """
         #sort  the minterms for presentation purpose
         mts.sort()
         grps = []
+
+        #maximum possible number of groups
         num_groups = len(mts[0])
 
 
@@ -234,29 +267,39 @@ class QM:
         #holds all the generations that are reached, used mainly for printing
         all_gens = [new_gen]
         
+        #combine groups in each generation to form a new generation as long 
+        #as there is offspring giving rise to a new generation
         while new_gen:
-            for x in new_gen:
-                for y in x:
-                    self.prime_implicants.append(y)
+            for group in new_gen:
+                for term in group:
+                    #first consider all minterms in the group as potential prime implicants
+                    self.prime_implicants.append(term)
 
             new_gen = self.combine_generation(new_gen)
             
-
+              
             if new_gen:
                 all_gens.append(new_gen)
 
+        #filter self.prime_implicants to contain only those terms that failed to combine i.e actual prime
+        #implicants
         self.prime_implicants = [pi for pi in self.prime_implicants if pi not in self.combined]
         
-        
+        #holds the table data to be stored in the procedure
         table_data = [
             []
         ]
+
+        #add all the data for all the generations to table data to allow them to be displayed as 
+        #part of the procedure
+
+        #add the heading for each generation
         for gen in all_gens:
             i = all_gens.index(gen)
 
             table_data[0].append(Color('{autogreen} Stage '+str(i)+'{/autogreen}'))
             
-            
+        #add the actual data for each generation
         for gen in all_gens:
             i = all_gens.index(gen)
             for grp in gen:
@@ -266,13 +309,16 @@ class QM:
                 if i == 0:
                     temp = ["" for x in table_data[0]]
                     table_data.append(temp)
-
+                
+                # for subsequent generations append data to appropriate locations
                 for mt in grp:
                     table_data[j+1][i]+=str(mt)+"  "
 
+                    #add a tick to the side of all terms that combined
                     if mt in self.combined:
                         table_data[j+1][i]+=u'\u2713'
 
+                    #add a star to the side of all prime implicants t            
                     else:
                         table_data[j+1][i]+='*'
 
@@ -282,10 +328,12 @@ class QM:
         table.inner_row_border = True
 
         self.procedure+=Color('\n\n{autoblue}===========================\nStep 2 : Combining Minterms\n===========================\n{/autoblue}\n')
+        #add the table with the steps to be added to procedure
         self.procedure+=table.table
 
         self.procedure+=Color('\n\n{autoblue} Prime Implicants {/autoblue}\n ----------------\n')
         
+        #print each prime implicant alongside its character represenation if it exits
         for pi in self.prime_implicants:
             ch = self.to_char(pi,self.chars) if self.chars else ''
             self.procedure+=('  '+pi + ' ('+ch +') '+'\n')
@@ -295,10 +343,11 @@ class QM:
             
     def can_cover(self,pi,minterm):
         """
-        Generates all possible permutations of the prime implicant
+        Checks if a prime implicant (pi) can cover the minterm
 
         Args:
-            pi: A string representing the prime implicant
+            pi: A binary string representing the prime implicant
+            minterm: A binary string representing the minterm in question
 
         Returns:
             A list containing all possible permutations of the prime implicant
@@ -336,7 +385,7 @@ class QM:
         #find the prime implicants that are the only one covering any minterm
          #for printing the coverage table
 
-        #################################################################################################
+        ####################################for printing to terminal#####################################
         table_data = [['']+[Color('{autogreen}'+str(int(x,2))+'{/autogreen}') for x in self.minterms]]
 
     
@@ -398,10 +447,21 @@ class QM:
         #adds the secondary essential prime implicants to the epis
         #returns the other non essential prime implicants necessary to  complete the coverage table
         #uses petricks method for computation
+
+        #TODO
+        #Modify algorithm from petrick section to be more robust 
+        #currently limited by mapvals
+
+
+        #holds possible map values the bit strings e.g 10_1 to be characters 
+        #petrick's method is then applied to the the character representation
+        #For a better visualization view https://en.wikipedia.org/wiki/Petrick%27s_method
         mapvals = list(string.ascii_letters + string.digits)
-        mapped = []
-        charmap = {}
-        prod = []
+        
+        mapped = []#already mapped bit strings
+        charmap = {}#structure that holds maps
+        prod = [] #product or result from petrick algoirthm
+
         for mterm in self.coverage_table:
             strrep = ""
             for t in self.coverage_table[mterm]:
@@ -429,16 +489,18 @@ class QM:
         # print('essential prime implicants ',self.essential_prime_implicants)
         
         new_prod = []
+
+        #if there is a need to compute secondary essential prime implicants 
         if prod:
+            #use petrick's method for minimizaition
             prod = multiply_all(prod)
 
             prod = remove_dups(prod)
             
-            # print(prod)
             prod = (reduce_expr(prod))
-            #print(prod)
+      
             prod = min_len_terms(prod)
-            #print(prod)
+        
             prod = fewest_literals(prod)
        
             for t in prod:
@@ -461,29 +523,42 @@ class QM:
         Minimizes the circuit and returns the list of terms for minimized circuit
 
         Returns:
-            A list containing both primary and secondary essential prime implicants 
+            A list containing all possible solutions to the minimization problem
         """
 
+        #actual process of minimization
+
+        #find the prime implicants
         pis = self.pis()
 
+        #essential prime implicant portion of the solution
         essential_pi_sol = ""
 
         primary_epis = self.primary_epis()
 
         for pi in primary_epis:
+            #if the user specified variables e.g a,b,c,d then make the solution
+            #in terms of this
             ch = self.to_char(pi,self.chars) if self.chars else pi
 
+            #don't add a + to the end if this is the las pi in the list
+            #e.g [ab,cd,dg] don't add a + to the end of dg as in ab + cd +dg +
             if pi == primary_epis[-1]:
                 essential_pi_sol+=ch
             else:
                 essential_pi_sol+=ch+' + '
         
+        #compute the part of the solution that should come from the secondary essential prime
+        #implicants
         secondary_epi_sols = self.secondary_epis()
         possible_solutions = []
 
         if secondary_epi_sols:
             for spi in secondary_epi_sols:
                 if essential_pi_sol:
+                    #combine each possible solution due to secondary essential
+                    #prime implicants with that from primary essential prime
+                    #implicants 
                     possible_solutions.append(essential_pi_sol+' + '+spi)
                 else:
                     possible_solutions.append(spi)
