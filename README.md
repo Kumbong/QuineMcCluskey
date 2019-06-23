@@ -11,11 +11,6 @@ A CLI/GUI tool for minimizing sum of products via the Quine McCluskey minimizati
    * Works on Mac, Linux and Windows
    
 ## Installation
-### Option 1: As a package
-```python
-   pip install qmccluskey
-```    
-### Option 2: From source
 1. Clone the repo
 ```python
    git clone https://github.com/Kumbong/quine_mccluskey.git
@@ -25,26 +20,8 @@ A CLI/GUI tool for minimizing sum of products via the Quine McCluskey minimizati
 ```python
    pip install -r requirements.txt
 ```
-### Option 3: From Binary
-qmccluskey is available for OSX (macOS), Linux and Windows.
-
-Download the latest binary from the Releases page.
 
 ## Usage
-### Option 1: As a package
-```python
-   from qmccluskey import QM
-   qm = QM([1,3,4,6,7],dcares=[0],variables=[a,b,c])
-   
-   minimized = qm.minimize() #minimize the expression
-   
-   print(qm.pis()) #get the prime implicants
-   print(qm.primary_epis()) #get the essential prime implicants
-   
-   qm.show_procedure() #show steps to answer
-```
-
-### Option 2: Using the CLI
 You can use the following optional arguments according to your needs: 
 
    * `-d`, `--dcares` (list of numbers): **list of dont't cares (default=0,1,2,3,4,5,6)**
@@ -53,7 +30,7 @@ You can use the following optional arguments according to your needs:
    
 Example
 ```python
-    qmccluskey 1,2,3,5,6,7,9,13,15 -d 0,8,12 -v a,b,c,d 
+    python -m qmccluskey 0,1,3,7,8,9,11,15 -d 12  -v a,b,c,d
 ```
 
 
@@ -71,8 +48,8 @@ Please make sure to update tests as appropriate.
 
 ### Todos
 
- - Allow display of steps that lead to solution 
- - Implement GUI component
+ - Complete GUI module
+ - Write tests
 
 
 
