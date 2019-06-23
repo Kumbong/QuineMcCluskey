@@ -1,32 +1,25 @@
 
 
 def multiply(t1,t2):
-    # print(t1)
-    # print(t2)
     t1 = t1.split('+')
     t2 = t2.split('+')
 
-    # print(t1)
-    # print(t2)
     prod = ''
     for m in t1:
-        # print(m)
         temp = ""
         for n in t2:
-            # print(n)
+         
             if t1.index(m) == len(t1)-1 and t2.index(n) == len(t2)-1:
                 if m!=n:
                     temp=(temp+m+n)
                 else:
                     temp += m
-                # print(temp)
+  
             else:
                 if m!=n:
                     temp=temp + m+n+'+'
                 else:
                     temp+=m+'+'
-        
-            # print(prod)
         
         prod+=temp
     
@@ -127,15 +120,3 @@ def fewest_literals(terms):
     
     return min_lits
 
-# xc = (multiply_all(['k+l','k+m','l+n','m+p','n+q','p+q']))
-# print(xc)
-# xc = remove_dups(xc)
-# print(xc)
-
-# xc = (reduce_expr(xc))
-# print(xc)
-
-# print(min_len_terms(xc))
-
-
-# print(count_literals('00_1'))

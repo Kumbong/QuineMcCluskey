@@ -1,7 +1,7 @@
 #TODO
 #change doc strings 
 #Colorclass not working on windows 
-
+#change 
 import sys
 from colorclass import Color, Windows
 from core.qm.petrick import multiply, remove_dups, multiply_all,reduce_expr,min_len_terms,count_literals, fewest_literals
