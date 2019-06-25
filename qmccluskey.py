@@ -1,6 +1,6 @@
 from core.qm.qm import QM
 import argparse
-
+import sys
 #TODO
 #add validation for variables from CLI and GUI
 
@@ -29,7 +29,7 @@ minterms  = args.minterms[0].split(',')
 for mt in minterms:
     #if it is not a whitespace and it is not an integer 
     if (mt and not representsInt(mt)) or ((mt and representsInt(mt)) and int(mt) < 0):
-        raise argparse.ArgumentTypeError('Integer values expected for minterms')
+        sys.exit('Error: Integer values expected for minterms')
 
 #make sure all the values in the values entered for dont cares are valid integers
 if args.dont_cares:
@@ -37,19 +37,32 @@ if args.dont_cares:
     #make sure the don't cares are all integer values
     for dc in dcares:
         if (dc and not representsInt(dc)) or ((dc and representsInt(dc)) and int(dc) < 0):
-            raise argparse.ArgumentTypeError('Integer values expected for don\'t cares')
+            sys.exit('Error : Integer values expected for don\'t cares')
 else:
     dcares = []
 
 ##################################add validation for variables here ####################
 if args.variables:
     variables = args.variables.split(',')
+
+    #make sure the variables entered are enough to represent the expression 
+    #else raise a value error exception and close the program
+
+    #check the number of variables needed
+
+    mterms = map(lambda x : int(x),minterms)
+    max_minterm = max(mterms)
+
+    max_minterm = bin(max_minterm)[2:]
+
+    if len(variables) != len(max_minterm):
+        sys.exit("Error: Number of variables entered is not enough to represent expression")
 else: 
     variables = []
 
 #make sure show steps is either a yes or a no 
 if args.show_steps.lower() != 'yes' and args.show_steps.lower() != 'no':
-    raise argparse.ArgumentTypeError('show_steps expects yes or no')
+    sys.exit('show_steps expects yes or no')
     
 #simply expression and print solution if necessary
 qm = QM(minterms,dcares,variables)
