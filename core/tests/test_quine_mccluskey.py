@@ -3,7 +3,7 @@ from core.qm.qm import QM
 
 class TestQM(TestCase):
     def setup(self):
-        self.fail()
+        pass
 
     def test_to_binary(self):
         
@@ -23,7 +23,30 @@ class TestQM(TestCase):
         #check if the same applies to the don't cares
 
     def test_combine(self):
-        self.fail()
+        #test for two terms that are not supposed to be combined
+        #expected return value should be None
+        minterms = [1,2,3,4,5,6,15]
+        qm =  QM(minterms)
+
+        self.assertEqual(qm.combine('0000','1001'),None)
+        #test for values(without _ ) that differ by exactly one position 
+        #expected return value should have a new value with a _ in the positiion of difference
+
+        self.assertEqual(qm.combine('0000','0001'),'000_')
+        #test for values(without _ ) that differ by exactly one position 
+        #expected return value should have a new value with a _ in the positiion of difference
+
+        self.assertEqual(qm.combine('000_','100_'),'_00_')
+
+        #test for values that differ in length 
+        #valueerror exception should be thrown
+        with self.assertRaises(ValueError):
+            qm.combine('00000','0001'),ValueError
+
+        #test for values that are the same 
+        #None should be returned
+        self.assertEqual(qm.combine('0000','0000'),None)
+
 
     def test_combine_groups(self):
         self.fail()

@@ -126,6 +126,8 @@ class QM:
 
         """
 
+        if len(min1) != len(min2):
+            raise ValueError("Both terms vary in length")
         #get the positions where the two strings differ    
         pos = [i for i in range(len(min1)) if min1[i] != min2[i]]
 
