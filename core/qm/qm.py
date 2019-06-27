@@ -25,7 +25,7 @@ class QM:
 
     def __init__(self,minterms,dcares=[], chars = []):
 
-
+        Windows.enable(auto_colors=True)
         #holds the procedure leading up to the solution
         #used to allow user to have the option to print the solution steos or not
         self.procedure = ""
