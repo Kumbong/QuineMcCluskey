@@ -44,6 +44,11 @@ if args.dont_cares:
     for dc in dcares:
         if (dc and not representsInt(dc)) or ((dc and representsInt(dc)) and int(dc) < 0):
             sys.exit('Error : Integer values expected for don\'t cares')
+        
+        #a term cannot be a don't care and a minterm at the same time
+        if dc in minterms:
+            sys.exit('Error: A term cannot be a minterm and a don\'t care at the same time')
+
 else:
     dcares = []
 
@@ -51,6 +56,12 @@ else:
 if args.variables:
     variables = args.variables.split(',')
 
+    #filter out duplicates in the variables entered
+
+
+    #if there were duplicate terms then let the user know
+    if len(variables) != len(list(set(variables))):
+        sys.exit("Error: Duplicate terms not allowed for variables")
     #make sure the variables entered are enough to represent the expression 
     #else raise a value error exception and close the program
 
