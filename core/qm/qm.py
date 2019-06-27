@@ -25,7 +25,7 @@ class QM:
 
     def __init__(self,minterms,dcares=[], chars = []):
 
-        Windows.enable(auto_colors=True)
+        
         #holds the procedure leading up to the solution
         #used to allow user to have the option to print the solution steos or not
         self.procedure = ""
@@ -320,11 +320,10 @@ class QM:
 
                     #add a tick to the side of all terms that combined
                     if mt in self.combined:
-                        table_data[j+1][i]+=u'\u2713'
-
+                        table_data[j+1][i]+=Color('{autocyan} '+u'\u2713'+'{/autocyan}')
                     #add a star to the side of all prime implicants t            
                     else:
-                        table_data[j+1][i]+='*'
+                        table_data[j+1][i]+=Color('{autored} '+'*'+'{/autored}')
 
                     table_data[j+1][i]+="\n"
 
@@ -414,7 +413,7 @@ class QM:
         #tick for the prime implicants that are covered
         for minterm in self.minterms:
             if set(self.coverage_table[minterm]).intersection(set(self.essential_prime_implicants)):
-                table_data[-1][self.minterms.index(minterm)+1]=u'\u2713'
+                table_data[-1][self.minterms.index(minterm)+1]=Color('{autocyan} '+u'\u2713'+'{/autocyan}')
 
         #filter out any prime implicants that appear twice
         self.essential_prime_implicants = list(set(self.essential_prime_implicants))

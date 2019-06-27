@@ -1,12 +1,18 @@
 from core.qm.qm import QM
 import argparse
 import sys
+from colorclass import Windows
+
 #TODO
 #add validation for variables from CLI and GUI
 
+#enable colours on terminal for windows 
+if sys.platform == "win32":
+    Windows.enable(auto_colors=True)
 
 #used to check if a string can be an integer 
 def representsInt(s):
+    #checks if the string s represents an integer
     try: 
         int(s)
         return True
