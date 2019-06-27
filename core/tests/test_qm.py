@@ -49,8 +49,15 @@ class TestQM(TestCase):
 
 
     def test_combine_groups(self):
-        self.fail()
-
+        #test combination for some random groups
+        
+        minterms = [1,2,3,4,5,6,15]
+        qm =  QM(minterms)
+        self.assertEqual(qm.combine_groups(['0001','1000'],['0011','1001','1100']),['00_1','_001','100_','1_00'])
+        self.assertEqual(qm.combine_groups(['0000'],['0001','1000']),['000_','_000'])
+        self.assertEqual(qm.combine_groups([],['0001','1000']),[])
+        self.assertEqual(qm.combine_groups([],[]),[])
+        
     def test_combine_generation(self):
         self.fail()
 
