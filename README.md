@@ -1,13 +1,12 @@
 
 # Quine McCluskey Circuit Minimizer
 
-A CLI/GUI tool for minimizing sum of products via the Quine McCluskey minimization technique. 
+A CLI tool for minimizing sum of products via the Quine McCluskey minimization technique. 
 
 ## Features
    * Written in uncomplicated python
    * Supports don't cares and variables for representing expression
    * Display of all steps leading to solution
-   * Optional GUI tool for easy entering and viewing of data
    * Works on Mac, Linux and Windows
    
 ## Installation
