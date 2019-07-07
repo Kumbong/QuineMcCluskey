@@ -1,15 +1,25 @@
+![](https://img.shields.io/github/release/Kumbong/quine_mccluskey.svg)
+ ![](https://img.shields.io/github/issues/Kumbong/quine_mccluskey.svg)
+![](https://img.shields.io/github/issues-closed-raw/Kumbong/quine_mccluskey.svg)
+![](https://img.shields.io/travis/com/Kumbong/Hermann.svg)
+[![Requirements Status](https://requires.io/github/Kumbong/quine_mccluskey/requirements.svg?branch=master)](https://requires.io/github/Kumbong/quine_mccluskey/requirements/?branch=master)
+![](https://img.shields.io/snyk/vulnerabilities/github/Kumbong/quine_mccluskey.svg)
+![](https://img.shields.io/github/languages/top/kumbong/quine_mccluskey.svg)
+![](https://img.shields.io/codefactor/grade/github/kumbong/quine_mccluskey/master.svg)
+
+
 
 # Quine McCluskey Circuit Minimizer
 
-A CLI tool for minimizing sum of products via the Quine McCluskey minimization technique. 
+A robust :hammer:, insanely fast :zap: and stupidly easy to use :sleeping: CLI tool for minimizing sum of products via the Quine Mccluskey minimization technique.
 
-## Features
-   * Written in uncomplicated python
+## Features :gem:
+   * Written in uncomplicated python :innocent:
    * Supports don't cares and variables for representing expression
-   * Display of all steps leading to solution
+   * Display of all steps leading to solution :droplet:
    * Works on Mac, Linux and Windows
    
-## Installation
+## Installation :package:
 1. Clone the repo
 ```bash
    git clone https://github.com/Kumbong/quine_mccluskey.git
@@ -20,7 +30,7 @@ A CLI tool for minimizing sum of products via the Quine McCluskey minimization t
    pip install -r requirements.txt
 ```
 
-## Usage
+## Usage :computer:
 You can use the following optional arguments according to your needs: 
 
    * `-d`, `--dcares` (list of numbers): **list of dont't cares (default=[ ])**
@@ -32,7 +42,7 @@ Example
     python -m qmccluskey 0,1,3,7,8,9,11,15 -d 12  -v a,b,c,d
 ```
 
-## Demo
+## Demo :movie_camera:
    Solution for the the Example above
    
    ![](assets/images/grouping.png)
@@ -40,11 +50,11 @@ Example
    ![](assets/images/coverage.png)
    ![](assets/images/solution.png)
    
-## Contributing
+## Contributing :gift: [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
-## References
+## References :book:
 * Petrick's method 
     https://en.wikipedia.org/wiki/Petrick%27s_method
 * quine mccluskey also in python
@@ -52,14 +62,15 @@ Please make sure to update tests as appropriate.
 * readme.md
     https://github.com/karan/joe
 
-### Todos
-
+## Todos :pencil:
+ - Automate build
+ - Improve code quality to A+
  - Complete GUI module
  - Write tests
  - Include steps for petrick's method
 
 
-License
+License :key:
 ----
 
 MIT &copy; Kumbong Hermann
