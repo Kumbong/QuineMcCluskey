@@ -1,7 +1,7 @@
 ![](https://img.shields.io/github/release/Kumbong/quine_mccluskey.svg)
  ![](https://img.shields.io/github/issues/Kumbong/quine_mccluskey.svg)
 ![](https://img.shields.io/github/issues-closed-raw/Kumbong/quine_mccluskey.svg)
-![](https://img.shields.io/travis/com/Kumbong/Hermann.svg)
+![](https://travis-ci.org/Kumbong/quine_mccluskey.svg?branch=master)
 [![Requirements Status](https://requires.io/github/Kumbong/quine_mccluskey/requirements.svg?branch=master)](https://requires.io/github/Kumbong/quine_mccluskey/requirements/?branch=master)
 ![](https://img.shields.io/snyk/vulnerabilities/github/Kumbong/quine_mccluskey.svg)
 ![](https://img.shields.io/github/languages/top/kumbong/quine_mccluskey.svg)
