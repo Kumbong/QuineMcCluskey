@@ -185,7 +185,6 @@ class QM:
         Args:
             generation:  A collection [] of groups to be combined
             
-
         Returns:
             A new generation [] of groups 
 
@@ -250,7 +249,7 @@ class QM:
 
         self.procedure+=Color('{autoblue}==========================\nStep 1 : Grouping Minterms\n==========================\n{/autoblue}\n')
 
-        for i in range(len(grps)):
+        for i, _ in enumerate(grps):
         
             num_ones = grps[i][0].count('1')
             grp = grps[i]
@@ -366,7 +365,7 @@ class QM:
 
         pos = [i for i in range(len(pi)) if pi[i]=='_']
 
-        for i in range(len(pi)):
+        for i, _ in enumerate(pi):
             if i not in pos and pi[i]!=minterm[i]:
                 return False
 
@@ -500,6 +499,10 @@ class QM:
         # print('prime implicants',self.prime_implicants)
         # print('essential prime implicants ',self.essential_prime_implicants)
         
+        new_prod = self.new_prod(prod)
+        return new_prod
+
+    def new_prod(self,prod):
         new_prod = []
 
         #if there is a need to compute secondary essential prime implicants 
@@ -526,8 +529,6 @@ class QM:
                 new_prod.append(tempstr)
 
             #convertback
-        return new_prod
-
     def minimize(self):
         """
         Minimizes the circuit and returns the list of terms for minimized circuit
