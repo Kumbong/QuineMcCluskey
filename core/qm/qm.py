@@ -575,6 +575,10 @@ class QM:
         else:
             possible_solutions.append(essential_pi_sol)
 
+        self.add_minimize_to_procedure(possible_solutions)
+        return possible_solutions
+
+    def add_minimize_to_procedure(self,possible_solutions):
         self.procedure+=Color('\n\n{autoblue}========\nSolution \n========\n{/autoblue}\n')
         self.procedure+=possible_solutions[0]+'\n'
 
@@ -583,8 +587,6 @@ class QM:
             
             for i in range(1,len(possible_solutions)):
                 self.procedure+=possible_solutions[i]+'\n'
-
-        return possible_solutions
 
     def to_char(self,term,chars):
         """
