@@ -227,7 +227,21 @@ class QM:
         num_groups = len(mts[0])
 
 
-        ##########################for printing to the console##################################
+        for i in range(num_groups+1):
+            grp = [x for x in mts if x.count('1')==i]
+
+            if grp:
+                grps.append(grp)
+
+        
+        self.add_groups_to_procedure(grps)
+
+        return grps
+
+    def add_groups_to_procedure(self,grps):
+        """
+        Adds the groups of minterms to the procedure
+        """
         table_data = [
         [Color('{autogreen}Group{/autogreen}'),Color('{autogreen}Minterms (decimal){/autogreen}'), Color('{autogreen}Minterms (binary){/autogreen}')]
         ]
@@ -235,16 +249,9 @@ class QM:
         table.inner_row_border = True
 
         self.procedure+=Color('{autoblue}==========================\nStep 1 : Grouping Minterms\n==========================\n{/autoblue}\n')
-        #########################################################################################
-
-        for i in range(num_groups+1):
-            grp = [x for x in mts if x.count('1')==i]
-
-            if grp:
-                grps.append(grp)
 
         for i in range(len(grps)):
-        ##################################for printing to the console###############################
+        
             num_ones = grps[i][0].count('1')
             grp = grps[i]
             table_data.append([num_ones,str(int(grp[0],2)),grp[0]])
@@ -254,10 +261,7 @@ class QM:
                 table.table_data[i+1][2]+="\n"+grp[j]
                 
         self.procedure+=str(table.table)
-        ###########################################################################################
-
-        return grps
-
+        
     def pis(self):
         """
         Computes the prime implicants based on the minterms and dont cares
@@ -289,6 +293,11 @@ class QM:
         #implicants
         self.prime_implicants = [pi for pi in self.prime_implicants if pi not in self.combined]
         
+        self.add_pis_to_procedure(all_gens)
+        
+        return self.prime_implicants
+        
+    def add_pis_to_procedure(self,all_gens):
         #holds the table data to be stored in the procedure
         table_data = [
             []
@@ -341,9 +350,6 @@ class QM:
             ch = ' ('+self.to_char(pi,self.chars)+') ' if self.chars else ''
             self.procedure+=('  '+pi+ch+'\n')
 
-        return self.prime_implicants
-        
-            
     def can_cover(self,pi,minterm):
         """
         Checks if a prime implicant (pi) can cover the minterm
@@ -438,6 +444,10 @@ class QM:
                 self.procedure+=('  '+pi + ch +'\n')
     
         return self.essential_prime_implicants
+
+
+    def add_primary_epis_to_procedure(self):
+        pass
 
     def secondary_epis(self):
         """
