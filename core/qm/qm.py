@@ -185,6 +185,7 @@ class QM:
         Args:
             generation:  A collection [] of groups to be combined
             
+
         Returns:
             A new generation [] of groups 
 
@@ -226,21 +227,7 @@ class QM:
         num_groups = len(mts[0])
 
 
-        for i in range(num_groups+1):
-            grp = [x for x in mts if x.count('1')==i]
-
-            if grp:
-                grps.append(grp)
-
-        
-        self.add_groups_to_procedure(grps)
-
-        return grps
-
-    def add_groups_to_procedure(self,grps):
-        """
-        Adds the groups of minterms to the procedure
-        """
+        ##########################for printing to the console##################################
         table_data = [
         [Color('{autogreen}Group{/autogreen}'),Color('{autogreen}Minterms (decimal){/autogreen}'), Color('{autogreen}Minterms (binary){/autogreen}')]
         ]
@@ -248,9 +235,16 @@ class QM:
         table.inner_row_border = True
 
         self.procedure+=Color('{autoblue}==========================\nStep 1 : Grouping Minterms\n==========================\n{/autoblue}\n')
+        #########################################################################################
 
-        for i, _ in enumerate(grps):
-        
+        for i in range(num_groups+1):
+            grp = [x for x in mts if x.count('1')==i]
+
+            if grp:
+                grps.append(grp)
+
+        for i in range(len(grps)):
+        ##################################for printing to the console###############################
             num_ones = grps[i][0].count('1')
             grp = grps[i]
             table_data.append([num_ones,str(int(grp[0],2)),grp[0]])
@@ -260,7 +254,10 @@ class QM:
                 table.table_data[i+1][2]+="\n"+grp[j]
                 
         self.procedure+=str(table.table)
-        
+        ###########################################################################################
+
+        return grps
+
     def pis(self):
         """
         Computes the prime implicants based on the minterms and dont cares
@@ -292,11 +289,6 @@ class QM:
         #implicants
         self.prime_implicants = [pi for pi in self.prime_implicants if pi not in self.combined]
         
-        self.add_pis_to_procedure(all_gens)
-        
-        return self.prime_implicants
-        
-    def add_pis_to_procedure(self,all_gens):
         #holds the table data to be stored in the procedure
         table_data = [
             []
@@ -349,6 +341,9 @@ class QM:
             ch = ' ('+self.to_char(pi,self.chars)+') ' if self.chars else ''
             self.procedure+=('  '+pi+ch+'\n')
 
+        return self.prime_implicants
+        
+            
     def can_cover(self,pi,minterm):
         """
         Checks if a prime implicant (pi) can cover the minterm
@@ -365,7 +360,7 @@ class QM:
 
         pos = [i for i in range(len(pi)) if pi[i]=='_']
 
-        for i, _ in enumerate(pi):
+        for i in range(len(pi)):
             if i not in pos and pi[i]!=minterm[i]:
                 return False
 
@@ -444,10 +439,6 @@ class QM:
     
         return self.essential_prime_implicants
 
-
-    def add_primary_epis_to_procedure(self):
-        pass
-
     def secondary_epis(self):
         """
         Computes the secondary essential prime implicants
@@ -499,10 +490,6 @@ class QM:
         # print('prime implicants',self.prime_implicants)
         # print('essential prime implicants ',self.essential_prime_implicants)
         
-        new_prod = self.new_prod(prod)
-        return new_prod
-
-    def new_prod(self,prod):
         new_prod = []
 
         #if there is a need to compute secondary essential prime implicants 
@@ -529,6 +516,8 @@ class QM:
                 new_prod.append(tempstr)
 
             #convertback
+        return new_prod
+
     def minimize(self):
         """
         Minimizes the circuit and returns the list of terms for minimized circuit
@@ -576,10 +565,6 @@ class QM:
         else:
             possible_solutions.append(essential_pi_sol)
 
-        self.add_minimize_to_procedure(possible_solutions)
-        return possible_solutions
-
-    def add_minimize_to_procedure(self,possible_solutions):
         self.procedure+=Color('\n\n{autoblue}========\nSolution \n========\n{/autoblue}\n')
         self.procedure+=possible_solutions[0]+'\n'
 
@@ -588,6 +573,8 @@ class QM:
             
             for i in range(1,len(possible_solutions)):
                 self.procedure+=possible_solutions[i]+'\n'
+
+        return possible_solutions
 
     def to_char(self,term,chars):
         """
