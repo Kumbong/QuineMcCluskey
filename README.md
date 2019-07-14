@@ -18,6 +18,7 @@ A robust :hammer:, insanely fast :zap: and stupidly easy to use :sleeping: CLI t
    * Supports don't cares and variables for representing expression
    * Display of all steps leading to solution :droplet:
    * Works on Mac, Linux and Windows
+   * Provides all other alternative solutions to the minimization problem
    
 ## Installation :package:
 1. Clone the repo
