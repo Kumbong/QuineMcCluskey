@@ -66,9 +66,11 @@ if args.variables:
     #else raise a value error exception and close the program
 
     #check the number of variables needed
+    #take into consideration the minterms as well
 
     mterms = map(lambda x : int(x),minterms)
-    max_minterm = max(mterms)
+    dcs = map(lambda x : int(x),dcares)
+    max_minterm = max(list(mterms) + list(dcs))
 
     max_minterm = bin(max_minterm)[2:]
 

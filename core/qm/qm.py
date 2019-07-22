@@ -42,7 +42,9 @@ class QM:
         #get the number of bits to represent each binary
         #string. number of bits is the same as that needed
         # to represent the longest binary string 
-        self.nbits = len(bin(max(minterms))[2:])
+
+
+        self.nbits = len(bin(max(minterms+dcares))[2:])
         
         #convert minterms and dont cares to binary
         self.minterms =  self.to_binary(minterms)
@@ -256,6 +258,7 @@ class QM:
         self.procedure+=str(table.table)
         ###########################################################################################
 
+        print(self.procedure)
         return grps
 
     def pis(self):
