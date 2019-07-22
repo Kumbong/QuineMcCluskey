@@ -258,7 +258,6 @@ class QM:
         self.procedure+=str(table.table)
         ###########################################################################################
 
-        print(self.procedure)
         return grps
 
     def pis(self):
