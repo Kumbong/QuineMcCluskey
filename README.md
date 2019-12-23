@@ -43,7 +43,7 @@ You can use the following optional arguments according to your needs:
    * `-v`, `--variables` (list of chars): **list of characters for representing result (default = [ ])**
    * `-s`, `--show_steps` (yes|no): **show steps leading to solution (default=yes)**
    * `-p`, `--show_step` (sum of products): **sum of products are used to be reduce the function**
-   * `-m`, `--show_step` (sum of products): **sum of minterms are used to be reduce the function**
+   * `-m`, `--show_step` (minterms): **sum of minterms are used to be reduce the function**
    
 Example
 ```bash
