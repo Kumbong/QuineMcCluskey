@@ -13,7 +13,7 @@
  <img src="https://img.shields.io/snyk/vulnerabilities/github/Kumbong/quine_mccluskey.svg">
  <img src="https://img.shields.io/github/languages/top/kumbong/quine_mccluskey.svg">
  <img src="https://img.shields.io/codefactor/grade/github/kumbong/quine_mccluskey/master.svg">
- <img alt="Travis (.org)" src="https://img.shields.io/travis/kumbong/quine_mccluskey">
+ <img src="https://travis-ci.org/Kumbong/quine_mccluskey.svg?branch=master">
  </p>
 
 A robust :hammer:, insanely fast :zap: and stupidly easy to use :sleeping: CLI tool for minimizing sum of products via the Quine Mccluskey minimization technique.
@@ -50,7 +50,16 @@ Example
     python -m qmccluskey -m 0,1,3,7,8,9,11,15 -d 12  -v a,b,c,d
     python -m qmccluskey -p a'b'c'+b'cd'+a'bcd'+ab'c' -v a,b,c,d
 ```
-
+## Testing :telescope:
+Run the tests in verbose mode
+```bash
+    python -m unittest -v       
+```
+Check the test code coverage
+```bash
+    coverage run -m unittest discover 
+    coverage report -m   
+```
 ## Demo :movie_camera:
    Solution for the the Example above
    
