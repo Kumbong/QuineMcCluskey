@@ -61,7 +61,7 @@ Check the test code coverage
     coverage report -m   
 ```
 
-![](assets/images/code_coverage.png)
+![](assets/images/code_coverage.PNG)
 
 ## Demo :movie_camera:
    Solution for the the Example above
