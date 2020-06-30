@@ -7,7 +7,7 @@ from colorclass import Windows
 # add validation for variables from CLI and GUI
 
 # enable colours on terminal for windows
-
+#still not working
 if sys.platform == "win32":
     Windows.enable(auto_colors=True)
 
