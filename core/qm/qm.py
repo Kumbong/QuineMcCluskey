@@ -75,7 +75,6 @@ class QM:
         #wether or not to sort chars
         self.chars = sorted(chars)
 
-
     def to_binary(self,minterms=[],nbits = 0):
         """
         Converts every element in minterms to its binary representation.
@@ -112,7 +111,6 @@ class QM:
 
         return bminterms
    
-
     def combine(self,min1,min2):
         """
         Combines two minterms if they differ by exactly one position.
@@ -178,7 +176,6 @@ class QM:
                         result.append(offspring)
     
         return result
-
 
     def combine_generation(self,generation=[]):
         """
@@ -344,8 +341,7 @@ class QM:
             self.procedure+=('  '+pi+ch+'\n')
 
         return self.prime_implicants
-        
-            
+         
     def can_cover(self,pi,minterm):
         """
         Checks if a prime implicant (pi) can cover the minterm
@@ -355,7 +351,7 @@ class QM:
             minterm: A binary string representing the minterm in question
 
         Returns:
-            A list containing all possible permutations of the prime implicant
+            True if the prime implicant can cover the minterm and false if otherwise
         Raises:
         """
         #extract the minterm to also contain dashes where pi contains them 
@@ -367,9 +363,6 @@ class QM:
                 return False
 
         return True
-
-
-
 
     def primary_epis(self):
         """
@@ -576,6 +569,7 @@ class QM:
             for i in range(1,len(possible_solutions)):
                 self.procedure+=possible_solutions[i]+'\n'
 
+        print(possible_solutions)
         return possible_solutions
 
     def to_char(self,term,chars):
@@ -584,9 +578,9 @@ class QM:
 
         Args:
             term : A binary string representing the prime implicant
-
+            chars: An array containing the possible acceptable characters
         Returns:
-            A string with the character represenation fro the string
+            A string with the character represenation from the string
         """
 
         i = 0 
