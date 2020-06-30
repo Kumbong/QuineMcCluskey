@@ -186,3 +186,5 @@ def fewest_literals(terms):
     
     return min_lits
 
+
+

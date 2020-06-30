@@ -17,11 +17,18 @@ class TestPetrick(TestCase):
     # def test_reduce_expr(self):
     #     self.fail()
 
-    # def test_min_len_terms(self):
-    #     self.fail()
+    def test_min_len_terms(self):
+        x = ['abcd','abc','abcde','a','b']
+        self.assertEqual(min_len_terms(x),['a','b'])
 
-    # def test_count_literal(self):
-    #     self.fail()
-    
-    # def test_fewest_literals(self):
-    #     self.fail()
+        
+        self.assertEqual(min_len_terms(['a']),['a'])
+
+    def test_count_literals(self):
+        self.assertEqual(count_literals('____'),0)
+        self.assertEqual(count_literals('abcd'),4)
+        self.assertEqual(count_literals('ab__'),2)   
+
+    def test_fewest_literals(self):
+        self.assertEqual(fewest_literals(['abcd','ab__','__cd']),['ab__','__cd'])
+        self.assertEqual(fewest_literals(['a_b_','ab__','__cd']),['a_b_','ab__','__cd'])
