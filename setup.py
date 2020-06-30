@@ -7,7 +7,7 @@ setup(name='Distutils',
       author='Kumbong Hermann',
       author_email='kumbonghermann@gmail.com',
       url='',
-      packages=['gui','qm' ,'tests'],
+      packages=['qm' ,'tests'],
       long_description=open('README.md').read(),
      )
 
