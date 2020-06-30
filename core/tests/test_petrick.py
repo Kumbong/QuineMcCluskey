@@ -5,7 +5,7 @@ class TestPetrick(TestCase):
     def setup(self):
         pass
 
-def test_multiply(self):
+#def test_multiply(self):
     #     self.fail()
 
     # def test_remove_dups(self):
