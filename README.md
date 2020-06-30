@@ -60,7 +60,9 @@ Check the test code coverage
     coverage run -m unittest discover 
     coverage report -m   
 ```
-    ![](assets/images/grouping.png)
+
+    ![](assets/images/code_coverage.png)
+
 ## Demo :movie_camera:
    Solution for the the Example above
    
