@@ -55,7 +55,7 @@ Run the tests in verbose mode
 ```bash
     python -m unittest -v       
 ```
-Check the test code coverage
+Check the test code coverage (98%)
 ```bash
     coverage run -m unittest discover 
     coverage report -m   
