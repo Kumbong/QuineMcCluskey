@@ -50,19 +50,6 @@ Example
     python -m qmccluskey -m 0,1,3,7,8,9,11,15 -d 12  -v a,b,c,d
     python -m qmccluskey -p a'b'c'+b'cd'+a'bcd'+ab'c' -v a,b,c,d
 ```
-## Testing :telescope:
-Run the tests in verbose mode
-```bash
-    python -m unittest -v       
-```
-Check the test code coverage (98%)
-```bash
-    coverage run -m unittest discover 
-    coverage report -m   
-```
-
-![](assets/images/code_coverage.PNG)
-
 ## Demo :movie_camera:
    Solution for the the Example above
    
