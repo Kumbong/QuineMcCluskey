@@ -16,7 +16,7 @@
  <img src="https://travis-ci.org/Kumbong/quine_mccluskey.svg?branch=master">
  </p>
 
-A robust :hammer:, insanely fast :zap: and stupidly easy to use :sleeping: CLI tool for minimizing sum of products via the Quine Mccluskey minimization technique.
+A robust, insanely fast and stupidly easy to use CLI tool for minimizing sum of products via the Quine Mccluskey minimization technique.
 
 ## Features :gem:
    * Written in uncomplicated python :innocent:
